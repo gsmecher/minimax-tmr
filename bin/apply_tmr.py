@@ -42,6 +42,8 @@ insertion_points = find_after_ff_voter_points(
 print(f"Insertion points: {len(insertion_points)}")
 
 replicas = tmr.apply_nmr([*instances_to_replicate, *ports_to_replicate], 3, name_suffix='TMR', rename_original=True)
+tmr.uniquify_nmr_property(replicas, {"HBLKNM", "HLUTNM", "SOFT_HLUTNM"}, "TMR")
+
 voters = tmr.insert_organs(replicas, insertion_points, XilinxTMRVoter(), 'VOTER')
 
 sdn.compose(netlist, "minimax_tmr.edif")
