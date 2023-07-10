@@ -1,0 +1,9 @@
+[submodule "minimax"]
+	path = minimax
+	url = git@github.com:gsmecher/minimax.git
+[submodule "spydrnet-tmr"]
+	path = spydrnet-tmr
+	url = https://github.com/byuccl/spydrnet-tmr.git
+[submodule "spydrnet"]
+	path = spydrnet
+	url = https://github.com/byuccl/spydrnet.git
