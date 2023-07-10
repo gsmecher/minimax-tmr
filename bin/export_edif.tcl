@@ -5,6 +5,6 @@
 read_verilog -sv minimax/rtl/minimax.v
 set_property part "xcku060-ffva1517-1-c" [current_project]
 
-synth_design -top minimax
+synth_design -no_lc -top minimax
 write_edif -force minimax.edif
 quit
