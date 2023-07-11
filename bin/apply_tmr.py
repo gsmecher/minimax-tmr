@@ -19,20 +19,36 @@ uniquify(netlist)
 # Replicate all leaf nodes
 hinstances_to_replicate = list(netlist.get_hinstances(
     recursive=True,
-    filter=lambda x: x.item.reference.is_leaf()))
+    filter=lambda x: x.item.reference.is_leaf()
+        and "vcc" not in x.name.lower()
+        and "gnd" not in x.name.lower()
+        and "ibuf" not in x.name.lower()
+        and 'ibuf' not in x.item.reference.name.lower()
+    ))
 
-instances_to_replicate = list(x.item for x in hinstances_to_replicate)
+instances_to_replicate = [x.item for x in hinstances_to_replicate]
 print(f"Instances to replicate: {len(instances_to_replicate)}")
 
-# Replicate all INPUT ports
-#hports_to_replicate = list(netlist.get_hports(filter = lambda x: x.item.direction is sdn.IN))
-#ports_to_replicate = list(x.item for x in hports_to_replicate)
-#print(f"Ports to replicate: {len(ports_to_replicate)}")
+# Replicate instruction and reset ports
+replicated_ports = {
+    "reset",
+    "inst[15:0]",
+    "inst_ce",
+    "inst_addr[11:0]",
+    "addr[31:0]",
+    "wdata[31:0]",
+    "rdata[31:0]",
+    "wmask[3:0]",
+    "rreq",
+    "rack",
+}
+print([p.name for p in netlist.get_hports()])
+hports_to_replicate = list(netlist.get_hports(
+    filter = lambda x: x.name.lower() in replicated_ports))
 
-# Replicate only internal state - no ports
-hports_to_replicate = []
-ports_to_replicate = []
-print(f"Ports to replicate: {len(ports_to_replicate)}")
+ports_to_replicate = [x.item for x in hports_to_replicate]
+print(f"Ports to replicate: {len(ports_to_replicate)} ({', '.join(p.name for p in ports_to_replicate)})")
+assert len(replicated_ports) == len(ports_to_replicate)
 
 # Insertion points
 insertion_points = find_after_ff_voter_points(

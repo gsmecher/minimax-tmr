@@ -7,7 +7,7 @@ read_edif minimax.edif
 read_edif minimax_tmr.edif
 read_vhdl -vhdl2008 rtl/wrapper.vhd
 read_verilog rtl/minimax_bb.v
-add_files -fileset constrs_1 minimax/tcl/arty_a7.xdc
+add_files -fileset constrs_1 rtl/arty_a7.xdc
 add_files minimax/asm/blink.mem
 set_property top wrapper [current_fileset]
 launch_runs impl_1 -jobs 8
